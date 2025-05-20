@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 import Hero from './components/Hero'
@@ -10,11 +10,27 @@ import ChatWidget from './components/ChatWidget'
 import GlobalPresence from './components/GlobalPresence'
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(() => {
+    // Check if user has a saved preference
+    const savedMode = localStorage.getItem('darkMode')
+    // Check if user's system prefers dark mode
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    return savedMode ? JSON.parse(savedMode) : prefersDark
+  })
+
+  useEffect(() => {
+    // Update localStorage when darkMode changes
+    localStorage.setItem('darkMode', JSON.stringify(darkMode))
+    // Update class on document
+    if (darkMode) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [darkMode])
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode)
-    document.documentElement.classList.toggle('dark')
   }
 
   return (
@@ -31,6 +47,7 @@ function App() {
           <button
             onClick={toggleDarkMode}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {darkMode ? (
               <SunIcon className="w-6 h-6 text-yellow-500" />

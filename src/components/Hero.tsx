@@ -2,6 +2,13 @@ import React from 'react'
 import { motion } from 'framer-motion'
 
 const Hero = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-20">
@@ -28,10 +35,16 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <button className="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            >
               List Your License
             </button>
-            <button className="px-8 py-3 bg-white text-primary-600 rounded-lg border border-primary-600 hover:bg-primary-50 transition-colors">
+            <button 
+              onClick={() => scrollToSection('how-it-works')}
+              className="px-8 py-3 bg-white text-primary-600 rounded-lg border border-primary-600 hover:bg-primary-50 transition-colors"
+            >
               Learn More
             </button>
           </motion.div>
